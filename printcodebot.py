@@ -1,8 +1,19 @@
 import telegram
+from telegram.ext import Updater
+from telegram.ext import CommandHandler
 import subprocess
 import sys
 
+
+f = open('config/token.txt', 'r')
+TOKEN = f.read().replace('\n', '')
+f.close()
+
+#updater=Updater(token=TOKEN, use_context=True)
+#dispatcher = updater.dispatcher
 bot = telegram.Bot(TOKEN)
+
+#updater.start_polling()
 
 arguments = sys.argv
 arguments_def = ""
@@ -20,5 +31,6 @@ text2 = ""
 for line in f:
     text2 += line
 
+f.close()
 
-bot.send_message(chat_id=USER_ID, text=text2)
+bot.send_message(chat_id=CHAT_ID, text=text2)
