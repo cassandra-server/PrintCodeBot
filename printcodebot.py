@@ -9,21 +9,21 @@ f = open('config/token.txt', 'r')
 TOKEN = f.read().replace('\n', '')
 f.close()
 
-#updater=Updater(token=TOKEN, use_context=True)
-#dispatcher = updater.dispatcher
 bot = telegram.Bot(TOKEN)
 
-#updater.start_polling()
-
 arguments = sys.argv
-arguments_def = ""
+code = ""
+USERNAME = ""
 
 for i in range (1, len(arguments)):
-  arguments_def += arguments[i] + " "
+	if (arguments [i] == "-u"):
+		USERNAME = arguments[i+1]
+	if (arguments [i] == "-f"):
+		code += arguments[i+1] + " "
 
-arguments_def += "> .stuff.txt"
+code += "> .stuff.txt"
 
-subprocess.call(arguments_def, shell=True)
+subprocess.call(code, shell=True)
 
 f = open(".stuff.txt", 'r')
 text2 = ""
@@ -33,4 +33,4 @@ for line in f:
 
 f.close()
 
-bot.send_message(chat_id=CHAT_ID, text=text2)
+bot.send_message(chat_id=USERNAME, text=text2)
