@@ -44,6 +44,8 @@ bot = telegram.Bot(TOKEN)
 
 arguments = sys.argv
 code = ""
+usernames_raw = ""
+groups_raw = ""
 addressees = []
 
 for i in range (1, len(arguments)):
@@ -66,5 +68,5 @@ for line in f:
 
 f.close()
 
-for addressee in addressees:
+for addressee in list(dict.fromkeys(addressees)):
 	bot.send_message(chat_id=addressee, text=text2)
