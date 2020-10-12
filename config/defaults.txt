@@ -1,0 +1,2 @@
+token YOUR_TOKEN_HERE
+addressees user1,user2,user3
