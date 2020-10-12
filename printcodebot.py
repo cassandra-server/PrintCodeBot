@@ -4,7 +4,6 @@ from telegram.ext import CommandHandler
 import subprocess
 import sys
 
-
 def recognize_users (raw, is_group):
 	ug_data = raw.split(',')
 	if is_group:
@@ -47,26 +46,26 @@ code = ""
 usernames_raw = ""
 groups_raw = ""
 addressees = []
-
-for i in range (1, len(arguments)):
-	if (arguments [i] == "-u"):
-		addressees.extend(recognize_users(arguments[i+1], False))
-	if (arguments [i] == "-g"):
-		addressees.extend(recognize_users(arguments[i+1], True))
-	if (arguments [i] == "-f"):
-		code += arguments[i+1] + " "
-
 code += "> .stuff.txt"
 
-subprocess.call(code, shell=True)
+def SendMessage ():
+    for i in range (1, len(arguments)):
+	    if (arguments [i] == "-u"):
+	        addressees.extend(recognize_users(arguments[i+1], False))
+	    if (arguments [i] == "-g"):
+	        addressees.extend(recognize_users(arguments[i+1], True))
+	    if (arguments [i] == "-f"):
+	        code += arguments[i+1] + " "
 
-f = open(".stuff.txt", 'r')
-text2 = ""
+    subprocess.call(code, shell=True)
 
-for line in f:
-    text2 += line
+    f = open(".stuff.txt", 'r')
+        text2 = ""
 
-f.close()
+    for line in f:
+        text2 += line
 
-for addressee in list(dict.fromkeys(addressees)):
-	bot.send_message(chat_id=addressee, text=text2)
+    f.close()
+
+    for addressee in list(dict.fromkeys(addressees)):
+	    bot.send_message(chat_id=addressee, text=text2)
