@@ -60,9 +60,30 @@ def new_configuration ():
 	exit()
 
 
+def append(value): #value: 1 --> usernames / 2 --> groups
+	if value == 1:
+		path = 'config/users.txt'
+		print ("WELCOME TO THE APPEND USER DIALOG")
+		print ("---------------------------------")
+	f = open (path, 'a')
+
+	answer = 'y'
+	while (answer == 'y'):
+		print ("\nNEW USER:")
+		alias = input("Alias: ")
+		id = input("Id: ")
+		f.write(alias + " " + id + "\n")
+		answer = input("Do you wish to add another username [Y/N]? ").lower()
+	f.close()
+	exit()
+
+
 arguments = sys.argv
-if (len(arguments) == 2 and arguments[1] == "-c"):
-	new_configuration()
+if (len(arguments) == 2):
+	if (arguments[1] == "-c"):
+		new_configuration()
+	if (arguments[1] == "--add-user"):
+		append(1)
 
 bot = telegram.Bot(str(get_data("token", 0)))
 
