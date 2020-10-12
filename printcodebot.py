@@ -60,20 +60,42 @@ def new_configuration ():
 	exit()
 
 
-def append(value): #value: 1 --> usernames / 2 --> groups
+def add(value): #value: 1 --> usernames / 2 --> groups
 	if value == 1:
 		path = 'config/users.txt'
-		print ("WELCOME TO THE APPEND USER DIALOG")
+		print ("WELCOME TO THE ADD USER DIALOG")
 		print ("---------------------------------")
+	elif value == 2:
+		path = 'config/groups.txt'
+		print ("WELCOME TO THE ADD GROUP DIALOG")
+		print ("-------------------------------")
 	f = open (path, 'a')
+
+	entries = []
+
 
 	answer = 'y'
 	while (answer == 'y'):
-		print ("\nNEW USER:")
-		alias = input("Alias: ")
-		id = input("Id: ")
-		f.write(alias + " " + id + "\n")
-		answer = input("Do you wish to add another username [Y/N]? ").lower()
+		if value == 1:
+			print ("\nNEW USER:")
+			alias = input("Alias: ")
+			id = input("Id: ")
+			entries.append(alias + " " + id + "\n")
+			answer = input("Do you wish to add another username [Y/N]? ").lower()
+		elif value == 2:
+			print ("\nNEW GROUP:")
+			alias = input("Group alias: ")
+			id = ""
+			answer2 = 'y'
+			while (answer2 == 'y'):
+				print ('\nNEW USER IN "' + alias + '" GROUP')
+				id = id + input ("Alias/Id: ").replace('\n','') + ","
+				answer2 = input("Do you wish to add another username to group [Y/N]? ")
+			entries.append(alias + " " + id + "\n")
+			answer = input ("Do you wish to add another group [Y/N]? ").lower()
+
+	for entry in entries:
+		f.write(entry)
 	f.close()
 	exit()
 
@@ -83,7 +105,9 @@ if (len(arguments) == 2):
 	if (arguments[1] == "-c"):
 		new_configuration()
 	if (arguments[1] == "--add-user"):
-		append(1)
+		add(1)
+	if (arguments[1] == "--add-group"):
+		add(2)
 
 bot = telegram.Bot(str(get_data("token", 0)))
 
