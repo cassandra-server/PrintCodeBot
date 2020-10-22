@@ -48,7 +48,7 @@ def new_configuration ():
 	answer = 'y'
 	usernames = []
 	while (answer == 'y'):
-		usernames.append(input("Write a default username for the machine [alias/id]? "))
+		usernames.append(input("Write a default username for the machine [alias/id]? ").replace('\n',''))
 		answer = input ("Do you wish to add another username [Y/N]? ").lower()
 	f = open ('config/defaults.txt', 'w+')
 	f.write ("token " + token + '\n')
@@ -60,8 +60,15 @@ def new_configuration ():
 	exit()
 
 
-def add(value): #value: 1 --> usernames / 2 --> groups
-	if value == 1:
+def add(value): #value: 0 --> defaults / 1 --> usernames / 2 --> groups
+
+	entries = []
+
+	if value == 0:
+		path = 'config/defaults.txt'
+		print ("WELCOME TO THE ADD DEFAULT USER DIALOG")
+		print ("--------------------------------------")
+	elif value == 1:
 		path = 'config/users.txt'
 		print ("WELCOME TO THE ADD USER DIALOG")
 		print ("---------------------------------")
@@ -71,12 +78,14 @@ def add(value): #value: 1 --> usernames / 2 --> groups
 		print ("-------------------------------")
 	f = open (path, 'a')
 
-	entries = []
-
-
 	answer = 'y'
 	while (answer == 'y'):
-		if value == 1:
+		if value == 0:
+			print ("\nNEW DEFAULT USER:")
+			id = input("Alias/Id: ")
+			entries.append(id + ',')
+			answer = input("Do you wish to add another username [Y/N]? ").lower()
+		elif value == 1:
 			print ("\nNEW USER:")
 			alias = input("Alias: ")
 			id = input("Id: ")
@@ -97,6 +106,7 @@ def add(value): #value: 1 --> usernames / 2 --> groups
 	for entry in entries:
 		f.write(entry)
 	f.close()
+	print ("DIALOG ENDED! THANKS :)")
 	exit()
 
 
@@ -104,6 +114,8 @@ arguments = sys.argv
 if (len(arguments) == 2):
 	if (arguments[1] == "-c"):
 		new_configuration()
+	if (arguments[1] == "--add-default-user"):
+		add(0)
 	if (arguments[1] == "--add-user"):
 		add(1)
 	if (arguments[1] == "--add-group"):
